@@ -80,8 +80,10 @@ class PgeTgeConnector:
 
     @staticmethod
     def _get_all_data() -> list[PgeTgeHourData]:
-        from_date = (datetime.datetime.now()-datetime.timedelta(days=1)).strftime("%Y-%m-%d+00:00:00")
-        to_date = (datetime.datetime.now()+datetime.timedelta(days=0)).strftime("%Y-%m-%d+23:59:59")
+        now = datetime.datetime.now()
+        timezone = now.astimezone().tzinfo
+        from_date = (now - datetime.timedelta(days=1)).strftime("%Y-%m-%d+00:00:00")
+        to_date = (now + datetime.timedelta(days=0)).strftime("%Y-%m-%d+23:59:59")
         url = DATA_URL_TEMPLATE.format(from_date, to_date)
         response = requests.get(url, headers={"User-Agent": ""})
         if response.status_code != 200:
@@ -93,7 +95,7 @@ class PgeTgeConnector:
             time_str = PgeTgeConnector._get_entry_by_name(hourly_entry["attributes"], "quotationDate")
             price_str = PgeTgeConnector._get_entry_by_name(hourly_entry["attributes"], "price")
             volume_str = PgeTgeConnector._get_entry_by_name(hourly_entry["attributes"], "volume")
-            time = datetime.datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S+00:00")
+            time = datetime.datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S+00:00").replace(tzinfo=timezone)
             price = float(price_str)
             volume = float(volume_str)
             hour_data = PgeTgeHourData(time, price, volume)
