@@ -1,0 +1,12 @@
+{
+  "domain": "pge_tge",
+  "name": "PGE TGE",
+  "codeowners": ["@PiotrMachowski"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/PiotrMachowski/Home-Assistant-custom-components-PGE-TGE",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/PiotrMachowski/Home-Assistant-custom-components-PGE-TGE/issues",
+  "requirements": ["requests"],
+  "version": "v0.0.0"
+}
